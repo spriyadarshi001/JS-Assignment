@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather app</title>
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+    <style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.inputs {
+    
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    margin:  100px 0;
+}
+
+.inputs input[type="text"] {
+            height: 50px;
+            width: 550px;
+            background: #e7e7e7;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: bold;
+            font-size: 20px;
+            border: none;
+            text-align: center;
+            border-radius: 5px;
+            padding: 20px 20px;
+    
+}
+.inputs input[type="submit"] {
+            height: 50px;
+            width: 80px;
+            background: #e7e7e7;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: bold;
+            font-size: 20px;
+            border: none;
+            border-radius: 10px;
+}
+
+.display {
+    text-align: center;
+    color: #5160e8;
+}
+
+.wrapper {
+    margin: 0 9rem;
+    width: 50%;
+    background-color: #e7e7e7;
+    height: 40vh;
+    margin: 50px auto;
+    border-radius: 2px;
+}
+
+ </style>
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <section class="inputs">
+                <input type="text" placeholder="Enter any city" id="cityinput">
+                <input type="submit" value="Submit" id="add">
+            <button placeholder="submit" id="add"></button>
+            </section>
+
+            <section class="display">
+                <div class="wrapper">
+                    <h2 id="cityoutput"></h2>
+                    <p id="description"></p>
+                    <p id="temp"></p>
+                    <p id="wind"></p>
+            </section>
+        </div>
+    </div>
+
+
+
+    <script>
+var inputval = document.querySelector('#cityinput')
+var btn = document.querySelector('#add');
+var city = document.querySelector('#cityoutput')
+var descrip = document.querySelector('#description')
+var temp = document.querySelector('#temp')
+var wind = document.querySelector('#wind')
+
+apik = "de0ce2d6ec96652ea81ae58dcab2cd99"
+function convertion(val){
+    return (val - 273).toFixed(2)
+}
+
+    btn.addEventListener('click', function(){
+        fetch('https://api.openweathermap.org/data/2.5/weather?q='+inputval.value+'&appid='+apik)
+        .then(res => res.json())
+        .then(data => {
+            var nameval = data['name']
+            var descrip = data['weather']['0']['description']
+            var tempature = data['main']['temp']
+            var wndspd = data['wind']['speed']
+
+            city.innerHTML=`City: ${nameval}`
+            temp.innerHTML = `Temperature: ${ convertion(tempature)} C`
+            description.innerHTML = `Conditions: ${descrip}`
+            wind.innerHTML = `Wind Speed: ${wndspd} km/h`
+
+        })
+        .catch(err => alert('Wrong city name!'))
+    })
+    </script>
+</body>
+</html>
